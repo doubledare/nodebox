@@ -4,6 +4,7 @@ import nodebox.Icons;
 import nodebox.node.Node;
 import nodebox.node.Parameter;
 import nodebox.node.Port;
+import nodebox.node.Port.Cardinality;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;

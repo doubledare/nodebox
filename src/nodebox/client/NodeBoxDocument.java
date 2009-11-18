@@ -336,8 +336,19 @@ public class NodeBoxDocument extends JFrame implements DirtyListener, WindowList
     }
 
     public void revert() {
-        // TODO: Implement revert
-        JOptionPane.showMessageDialog(this, "Revert is not implemented yet.", "NodeBox", JOptionPane.ERROR_MESSAGE);
+        if( (documentFile == null) || (!isChanged()) ) {
+        	JOptionPane.showMessageDialog(this, "Revert not possible, not saved or no changes made.", "NodeBox", JOptionPane.ERROR_MESSAGE);
+        } else {
+        	int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to revert? You will lose all unsaved changes.", "NodeBox", JOptionPane.OK_CANCEL_OPTION);
+        	if( result == JOptionPane.OK_OPTION ) {
+        		// revert
+        		documentChanged = false;
+        		File fileToOpen = documentFile.getAbsoluteFile();
+        		close();
+        		open(fileToOpen);
+        		documentChanged = false; // this doesn't appear to work, need to see if documentChanged is getting cleared and set correctly
+        	}
+        }
     }
 
     public boolean saveToFile(File file) {

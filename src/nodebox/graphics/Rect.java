@@ -21,7 +21,7 @@ package nodebox.graphics;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 
-public class Rect implements Iterable {
+public class Rect implements Iterable<Float> {
 
     private float x, y, width, height;
 
