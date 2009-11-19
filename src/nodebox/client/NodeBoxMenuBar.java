@@ -1,8 +1,12 @@
 package nodebox.client;
 
 import javax.swing.*;
+
+import nodebox.node.Node;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +68,7 @@ public class NodeBoxMenuBar extends JMenuBar {
         // Node menu
         JMenu pythonMenu = new JMenu("Node");
         pythonMenu.add(new ReloadAction());
+        pythonMenu.add(new NewNodeAction());
         //pythonMenu.add(newLibraryAction);
         add(pythonMenu);
 
@@ -352,6 +357,44 @@ public class NodeBoxMenuBar extends JMenuBar {
         public void actionPerformed(ActionEvent e) {
             getCurrentDocument().reloadActiveNode();
         }
+    }
+    /**
+     * 
+     * @author joc
+     * NewNodeAction
+     * Allows assigning a menu and key shortcut to create new nodes.
+     * 
+     * TODO Attempt to link to currently selected node if appropriate see NetworkView smartConnect
+     * TODO Better positioning
+     * TODO Code that is now duplicated could be extracted somwhere for reuse?
+     */
+    public class NewNodeAction extends AbstractDocumentAction {
+		/**
+		 * serialVersionUID
+		 */
+		private static final long serialVersionUID = 7394947324525741459L;
+
+		public NewNodeAction() {
+			putValue(NAME, "New Node..");
+			putValue(ACCELERATOR_KEY, PlatformUtils.getKeyStroke(KeyEvent.VK_1)); //, InputEvent.SHIFT_DOWN_MASK));
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+//			JOptionPane.showMessageDialog(getCurrentDocument().getContentPane(), "New Node..");
+			showNodeSelectionDialog();
+		}
+		public void showNodeSelectionDialog() {
+			NodeBoxDocument document = getCurrentDocument();
+			NodeSelectionDialog dialog = new NodeSelectionDialog(document, document.getNodeLibrary(), document.getManager());
+			dialog.setVisible(true);
+			if(dialog.getSelectedNode() != null) {
+				Node n = document.getActiveNetwork().create(dialog.getSelectedNode());
+				Point pt = new Point((int) (Math.random() * 300), (int) (Math.random() * 300));
+				n.setPosition(new nodebox.graphics.Point(pt));
+	            n.setRendered();
+	            document.setActiveNode(n);
+			}
+		}
     }
 
 //    public class NewLibraryAction extends AbstractAction {
