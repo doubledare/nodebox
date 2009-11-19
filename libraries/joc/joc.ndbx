@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ndbx formatVersion="0.9" type="file">
+  <node name="quantize" prototype="corevector.filter" rendered="true" x="320" y="110">
+  	<description>align the points of source shape to a gridsize</description>
+    <param name="_code">
+      <value type="python"><![CDATA[
+def cook(self):
+    # Replace the code below
+    # Check if a shape is connected.
+    if self.shape is None: return None
+    # If you're changing the shape, make sure to clone it.
+    new_shape = self.shape.clone()
+    # Do something with the cloned copy.
+    for point in new_shape.points:
+        dx = round(point.x / self.gridsize) * self.gridsize
+        dy = round(point.y / self.gridsize) * self.gridsize
+        point.x = dx
+        point.y = dy
+        if (self.square):
+            point.type = 1
+    # Return the transformed shape.
+    return new_shape]]></value>
+    </param>
+    <param name="_image">
+      <value>quantize.png</value>
+    </param>
+    <param bounding="hard" max="100.0" min="1.0" name="gridsize" type="int">
+      <value>2</value>
+    </param>
+    <param bounding="hard" help="Remove curves?" name="square" type="int" widget="toggle">
+      <value>1</value>
+    </param>
+  </node>
+  <node name="lineto" prototype="corevector.generator" x="90" y="90">
+  	<description>A simple line</description>
+  	<param name="_code">
+      <value type="python"><![CDATA[from nodebox.graphics import Path
+def cook(self):
+  p = Path()
+  p.line(self.x,self.y,self.x2,self.y2)
+  if self.strokeWidth > 0:
+    p.strokeColor = self.stroke
+    p.strokeWidth = self.strokeWidth
+  else:
+    p.strokeColor = None
+  return p.asGeometry()]]></value>
+    </param>
+    <param name="_image">
+      <value>quantize.png</value>
+    </param>
+    <param name="x" type="float">
+      <value>0.0</value>
+    </param>
+    <param name="y" type="float">
+      <value>0.0</value>
+    </param>
+    <param name="x2" type="float">
+      <value>100.0</value>
+    </param>
+    <param name="y2" type="float">
+      <value>100.0</value>
+    </param>
+    <param name="stroke" type="color">
+      <value>#000000ff</value>
+    </param>
+    <param bounding="hard" label="Stroke Width" min="0.0" name="strokeWidth" type="float">
+      <value>1.0</value>
+    </param>
+  </node>
+</ndbx>
